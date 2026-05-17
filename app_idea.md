@@ -21,7 +21,7 @@ Most productivity apps are **Additive**. They ask you to *add* tasks, *add* tags
 
 ### A. The "Pop" (Instant Reward)
 When a sub-task is completed, it shouldn't just be a checkmark.
-- **Visual:** The task "pearl" pops into a cloud of color.
+- **Visual:** The task "pearl" pops into a cloud of color.m
 - **Haptic/Sound:** A crisp, high-quality "bubble pop" sound (recorded from real objects, not synthesized).
 - **Why it works:** It’s a sensory "micro-dose" of satisfaction.
 

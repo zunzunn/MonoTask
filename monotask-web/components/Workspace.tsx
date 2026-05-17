@@ -1,54 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
-
-type Source = "idle" | "ai" | "fallback";
-
-type FocusTask = {
-  id: string;
-  title: string;
-  icon: string;
-  steps: string[];
-  currentIndex: number;
-  completed: number;
-  source: Source;
-};
-
-const starterSteps = [
-  "No pressure. Take one slow breath.",
-  "Pick up one thing from the floor.",
-  "Put it anywhere it belongs.",
-];
-
-const starterTask: FocusTask = {
-  id: "clean-room",
-  title: "Clean my room",
-  icon: "cleaning_services",
-  steps: starterSteps,
-  currentIndex: 1,
-  completed: 1,
-  source: "idle",
-};
-
-const iconOptions = [
-  { icon: "cleaning_services", label: "Cleaning" },
-  { icon: "menu_book", label: "Study" },
-  { icon: "mail", label: "Message" },
-  { icon: "laptop_mac", label: "Computer" },
-  { icon: "shopping_bag", label: "Errand" },
-  { icon: "call", label: "Call" },
-  { icon: "edit_document", label: "Writing" },
-  { icon: "local_florist", label: "Care" },
-];
-
-function createId() {
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
+import AppNav from "@/components/AppNav";
+import {
+  createTaskId,
+  FocusTask,
+  iconOptions,
+  useTaskStore,
+} from "@/components/taskStore";
 
 export default function Workspace() {
-  const [tasks, setTasks] = useState<FocusTask[]>([starterTask]);
-  const [activeTaskId, setActiveTaskId] = useState(starterTask.id);
+  const { activeTaskId, setActiveTaskId, setTasks, tasks } = useTaskStore();
   const [taskInput, setTaskInput] = useState("");
   const [selectedIcon, setSelectedIcon] = useState(iconOptions[0].icon);
   const [tinyStepsMode, setTinyStepsMode] = useState(true);
@@ -127,7 +89,7 @@ export default function Workspace() {
       }
 
       const newTask: FocusTask = {
-        id: createId(),
+        id: createTaskId(),
         title,
         icon: selectedIcon,
         steps: data.steps,
@@ -192,42 +154,7 @@ export default function Workspace() {
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E\")",
       }}
     >
-      <nav
-        className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-500 ${
-          tinyStepsMode ? "bg-[#fff3e8]/80" : "bg-[#faf6f0]/90"
-        }`}
-      >
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4">
-          <Link
-            href="/"
-            className="text-2xl font-bold tracking-tight text-[#4a7c59]"
-            style={{ fontFamily: "Hanken Grotesk, sans-serif" }}
-          >
-            MonoTask
-          </Link>
-          <div
-            className={`hidden items-center gap-7 text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:flex ${
-              tinyStepsMode ? "opacity-45" : "opacity-100"
-            }`}
-          >
-            <a className="border-b-2 border-[#4a7c59] pb-1 text-[#4a7c59]" href="#">
-              Today
-            </a>
-            <a className="rounded-full px-3 py-2 transition hover:bg-[#e4e0d8]/40" href="#">
-              Garden
-            </a>
-            <a className="rounded-full px-3 py-2 transition hover:bg-[#e4e0d8]/40" href="#">
-              Settings
-            </a>
-          </div>
-          <Link
-            href="/"
-            className="rounded-full border border-[#c4c8bc] px-4 py-2 text-sm font-semibold text-[#4a4e4a] transition hover:bg-white"
-          >
-            Landing
-          </Link>
-        </div>
-      </nav>
+      <AppNav tinyStepsMode={tinyStepsMode} />
 
       <aside className="fixed left-4 top-1/2 z-30 hidden -translate-y-1/2 md:block">
         <div className="flex max-h-[74vh] w-[76px] flex-col items-center gap-4 overflow-hidden rounded-full border border-[#e5ddcf]/80 bg-[#fffaf4]/82 px-3 py-4 shadow-[0_18px_55px_rgba(46,50,48,0.08)] backdrop-blur-xl">
