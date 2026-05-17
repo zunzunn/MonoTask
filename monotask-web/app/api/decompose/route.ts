@@ -34,15 +34,19 @@ function fallbackForTask(task: string, potatoEnergy: boolean) {
   const trimmedTask = task.trim();
 
   if (!trimmedTask) {
-    return fallbackSteps;
+    return potatoEnergy ? fallbackSteps.slice(0, 3) : fallbackSteps;
   }
 
-  const start = potatoEnergy
-    ? "Take one slow breath."
-    : "Open or stand near the task.";
+  if (potatoEnergy) {
+    return [
+      "No pressure. Take one slow breath.",
+      `Just look at "${trimmedTask}" for 10 seconds.`,
+      "Touch one thing related to it. That counts.",
+    ];
+  }
 
   return [
-    start,
+    "Open or stand near the task.",
     `Look at "${trimmedTask}" for 10 seconds.`,
     "Choose the smallest visible piece.",
     "Work on only that piece for 2 minutes.",
@@ -78,8 +82,9 @@ Rules:
 1. Never use jargon. Keep language simple and encouraging.
 2. Every sub-task must be something the user can finish in under 2 minutes.
 3. Order tasks so the first one is the absolute easiest.
-4. If the user sounds overwhelmed or Potato Energy is on, start with a physical grounding action.
-5. Output ONLY a JSON array of strings. No conversational filler.`;
+4. If Tiny Steps Mode is on, return exactly 3 steps, make the tone very soft and supportive, and start the first step with "No pressure."
+5. If Tiny Steps Mode is off, return 5 to 7 steps.
+6. Output ONLY a JSON array of strings. No conversational filler.`;
 
   try {
     const response = await fetch(`${baseUrl}/chat/completions`, {
@@ -96,7 +101,7 @@ Rules:
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `Task: ${task}\nPotato Energy: ${potatoEnergy ? "on" : "off"}`,
+            content: `Task: ${task}\nTiny Steps Mode: ${potatoEnergy ? "on" : "off"}`,
           },
         ],
       }),
@@ -114,7 +119,10 @@ Rules:
       throw new Error("AI response did not contain a JSON array.");
     }
 
-    return NextResponse.json({ steps: steps.slice(0, 7), source: "ai" });
+    return NextResponse.json({
+      steps: steps.slice(0, potatoEnergy ? 3 : 7),
+      source: "ai",
+    });
   } catch {
     return NextResponse.json({
       steps: fallbackForTask(task, potatoEnergy),

@@ -7,11 +7,9 @@ type Source = "idle" | "ai" | "fallback";
 
 const starterTask = "Clean my room";
 const starterSteps = [
-  "Take one slow breath.",
-  "Pick up 5 things from the floor.",
-  "Put clothes in one pile.",
-  "Clear one small surface.",
-  "Take a 2-minute reset.",
+  "No pressure. Take one slow breath.",
+  "Pick up one thing from the floor.",
+  "Put it anywhere it belongs.",
 ];
 
 export default function Workspace() {
@@ -21,7 +19,8 @@ export default function Workspace() {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [completed, setCompleted] = useState(1);
   const [sparks, setSparks] = useState(1);
-  const [potatoEnergy, setPotatoEnergy] = useState(true);
+  const [tinyStepsMode, setTinyStepsMode] = useState(true);
+  const [modeMessage, setModeMessage] = useState("We'll make this smaller.");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [source, setSource] = useState<Source>("idle");
@@ -32,8 +31,31 @@ export default function Workspace() {
 
   const progressText = useMemo(() => {
     const done = Math.min(completed, steps.length);
-    return `${done} / ${steps.length} tiny steps`;
-  }, [completed, steps.length]);
+    return tinyStepsMode
+      ? `${done} / ${steps.length} soft steps`
+      : `${done} / ${steps.length} tiny steps`;
+  }, [completed, steps.length, tinyStepsMode]);
+
+  const visibleSteps = tinyStepsMode
+    ? steps.filter((_, index) => index <= Math.max(completed, currentIndex + 1))
+    : steps;
+
+  function setMode(enabled: boolean) {
+    setTinyStepsMode(enabled);
+    setModeMessage(enabled ? "We'll make this smaller." : "Back to the full path.");
+
+    if (enabled && !isComplete) {
+      setSteps((items) =>
+        items.map((item, index) =>
+          index === currentIndex && !item.toLowerCase().startsWith("no pressure")
+            ? `No pressure. ${item}`
+            : item,
+        ),
+      );
+    }
+
+    window.setTimeout(() => setModeMessage(""), 2200);
+  }
 
   async function decomposeTask(event?: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -51,7 +73,7 @@ export default function Workspace() {
       const response = await fetch("/api/decompose", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task, potatoEnergy }),
+        body: JSON.stringify({ task, potatoEnergy: tinyStepsMode }),
       });
 
       const data = await response.json();
@@ -88,27 +110,31 @@ export default function Workspace() {
   function makeEasier() {
     if (isComplete) return;
 
-    const softened = potatoEnergy
-      ? "Take one breath, then touch one thing related to this."
+    const softened = tinyStepsMode
+      ? "No pressure. Just touch one thing related to this."
       : "Do only the first 30 seconds of this step.";
 
     setSteps((items) =>
       items.map((item, index) => (index === currentIndex ? softened : item)),
     );
-    setPotatoEnergy(true);
+    setMode(true);
   }
 
   return (
     <div
       className={`min-h-screen overflow-x-hidden transition-colors duration-300 ${
-        potatoEnergy ? "bg-[#fbf3e8]" : "bg-[#faf6f0]"
+        tinyStepsMode ? "bg-[#fff3e8]" : "bg-[#faf6f0]"
       }`}
       style={{
         backgroundImage:
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E\")",
       }}
     >
-      <nav className="sticky top-0 z-50 bg-[#faf6f0]/90 backdrop-blur-md">
+      <nav
+        className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-500 ${
+          tinyStepsMode ? "bg-[#fff3e8]/80" : "bg-[#faf6f0]/90"
+        }`}
+      >
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4">
           <Link
             href="/"
@@ -117,7 +143,11 @@ export default function Workspace() {
           >
             MonoTask
           </Link>
-          <div className="hidden items-center gap-7 text-sm font-semibold text-[#4a4e4a] md:flex">
+          <div
+            className={`hidden items-center gap-7 text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:flex ${
+              tinyStepsMode ? "opacity-45" : "opacity-100"
+            }`}
+          >
             <a className="border-b-2 border-[#4a7c59] pb-1 text-[#4a7c59]" href="#">
               Today
             </a>
@@ -141,22 +171,22 @@ export default function Workspace() {
         <div className="absolute right-5 top-5 z-20 flex flex-col items-end">
           <label className="flex cursor-pointer items-center gap-3">
             <span className="text-sm font-semibold text-[#4a4e4a]">
-              Potato Energy
+              Tiny Steps Mode
             </span>
             <input
-              checked={potatoEnergy}
-              onChange={(event) => setPotatoEnergy(event.target.checked)}
+              checked={tinyStepsMode}
+              onChange={(event) => setMode(event.target.checked)}
               className="sr-only"
               type="checkbox"
             />
             <span
               className={`relative block h-6 w-11 rounded-full transition ${
-                potatoEnergy ? "bg-[#4a7c59]" : "bg-[#c4c8bc]"
+                tinyStepsMode ? "bg-[#d9a273]" : "bg-[#c4c8bc]"
               }`}
             >
               <span
                 className={`absolute top-1 h-4 w-4 rounded-full bg-white transition ${
-                  potatoEnergy ? "left-6" : "left-1"
+                  tinyStepsMode ? "left-6" : "left-1"
                 }`}
               />
             </span>
@@ -166,20 +196,50 @@ export default function Workspace() {
           </span>
         </div>
 
-        <section className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-8 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-[0_4px_20px_rgba(46,50,48,0.06)] md:p-12">
-          <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#78a886] opacity-10 blur-2xl" />
+        {modeMessage && (
+          <div
+            className={`mb-5 rounded-full px-4 py-2 text-sm font-semibold shadow-sm transition-all duration-500 ${
+              tinyStepsMode
+                ? "bg-[#fffaf4] text-[#705c30]"
+                : "bg-white text-[#4a4e4a]"
+            }`}
+          >
+            {modeMessage}
+          </div>
+        )}
+
+        <section
+          className={`relative z-10 flex w-full flex-col items-center gap-8 overflow-hidden rounded-3xl p-6 text-center transition-all duration-700 md:p-12 ${
+            tinyStepsMode
+              ? "max-w-[720px] scale-[1.02] bg-[#fffaf4] shadow-[0_18px_60px_rgba(112,92,48,0.12)]"
+              : "max-w-2xl bg-white shadow-[0_4px_20px_rgba(46,50,48,0.06)]"
+          }`}
+        >
+          <div
+            className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full blur-2xl transition-colors duration-700 ${
+              tinyStepsMode ? "bg-[#f4d6c4] opacity-40" : "bg-[#78a886] opacity-10"
+            }`}
+          />
 
           <form onSubmit={decomposeTask} className="flex w-full flex-col gap-3 sm:flex-row">
             <input
               aria-label="Task to break down"
               value={taskInput}
               onChange={(event) => setTaskInput(event.target.value)}
-              className="min-h-12 flex-1 rounded-2xl border border-[#c4c8bc] bg-[#faf6f0] px-4 text-base text-[#2e3230] outline-none transition focus:border-[#4a7c59] focus:ring-4 focus:ring-[#4a7c59]/20"
+              className={`min-h-12 flex-1 rounded-2xl border px-4 text-base text-[#2e3230] outline-none transition focus:ring-4 ${
+                tinyStepsMode
+                  ? "border-[#e8c0a0] bg-[#fff3e8] focus:border-[#d9a273] focus:ring-[#d9a273]/20"
+                  : "border-[#c4c8bc] bg-[#faf6f0] focus:border-[#4a7c59] focus:ring-[#4a7c59]/20"
+              }`}
               placeholder="What's the one thing you're avoiding?"
             />
             <button
               disabled={isLoading}
-              className="rounded-2xl bg-[#4a7c59] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#3f6d4c] disabled:cursor-not-allowed disabled:opacity-60"
+              className={`rounded-2xl px-5 py-3 text-sm font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                tinyStepsMode
+                  ? "bg-[#d9a273] hover:bg-[#c88c5e]"
+                  : "bg-[#4a7c59] hover:bg-[#3f6d4c]"
+              }`}
               type="submit"
             >
               {isLoading ? "Breaking it down..." : "Start"}
@@ -211,18 +271,24 @@ export default function Workspace() {
             <button
               onClick={completeStep}
               disabled={isComplete || isLoading}
-              className="w-full rounded-2xl bg-[#4a7c59] px-8 py-4 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#3f6d4c] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+              className={`w-full rounded-2xl px-8 py-4 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 ${
+                tinyStepsMode
+                  ? "bg-[#d9a273] hover:bg-[#c88c5e]"
+                  : "bg-[#4a7c59] hover:bg-[#3f6d4c]"
+              }`}
               type="button"
             >
-              {isComplete ? "Done for now" : "Done"}
+              {isComplete ? "Done for now" : tinyStepsMode ? "Tiny win" : "Done"}
             </button>
             <button
               onClick={makeEasier}
               disabled={isComplete}
-              className="text-sm font-semibold text-[#4a7c59] opacity-80 transition hover:opacity-100 disabled:opacity-40"
+              className={`text-sm font-semibold opacity-80 transition hover:opacity-100 disabled:opacity-40 ${
+                tinyStepsMode ? "text-[#b6784d]" : "text-[#4a7c59]"
+              }`}
               type="button"
             >
-              Make this easier
+              {tinyStepsMode ? "Even smaller" : "Make this easier"}
             </button>
           </div>
         </section>
@@ -230,12 +296,14 @@ export default function Workspace() {
         <div className="relative z-10 mt-14 flex w-full max-w-md items-center justify-center gap-4">
           <div className="absolute left-0 right-0 top-1/2 -z-10 h-0.5 -translate-y-1/2 bg-[#e4e0d8]" />
           <div
-            className="absolute left-0 top-1/2 -z-10 h-0.5 -translate-y-1/2 bg-[#4a7c59] opacity-40 transition-all"
+            className={`absolute left-0 top-1/2 -z-10 h-0.5 -translate-y-1/2 opacity-40 transition-all ${
+              tinyStepsMode ? "bg-[#d9a273]" : "bg-[#4a7c59]"
+            }`}
             style={{
               width: `${steps.length <= 1 ? 0 : Math.min((completed / steps.length) * 100, 100)}%`,
             }}
           />
-          {steps.map((step, index) => {
+          {visibleSteps.map((step, index) => {
             const isDone = index < completed;
             const isActive = index === currentIndex && !isComplete;
             const isLocked = index > completed;
@@ -245,9 +313,13 @@ export default function Workspace() {
                 aria-label={step}
                 className={`flex shrink-0 items-center justify-center rounded-full transition ${
                   isActive
-                    ? "h-10 w-10 border-4 border-[#4a7c59] bg-white shadow-[0_0_15px_rgba(74,124,89,0.3)]"
+                    ? tinyStepsMode
+                      ? "h-12 w-12 border-4 border-[#d9a273] bg-[#fffaf4] shadow-[0_0_24px_rgba(217,162,115,0.35)]"
+                      : "h-10 w-10 border-4 border-[#4a7c59] bg-white shadow-[0_0_15px_rgba(74,124,89,0.3)]"
                     : isDone
-                      ? "h-6 w-6 bg-[#4a7c59] text-white"
+                      ? tinyStepsMode
+                        ? "h-7 w-7 bg-[#d9a273] text-white"
+                        : "h-6 w-6 bg-[#4a7c59] text-white"
                       : "h-6 w-6 border-2 border-[#c4c8bc] bg-white"
                 }`}
                 disabled={isLocked}
@@ -258,18 +330,31 @@ export default function Workspace() {
                 {isDone ? (
                   <span className="text-xs">✓</span>
                 ) : isActive ? (
-                  <span className="h-3 w-3 animate-pulse rounded-full bg-[#4a7c59]" />
+                  <span
+                    className={`h-3 w-3 animate-pulse rounded-full ${
+                      tinyStepsMode ? "bg-[#d9a273]" : "bg-[#4a7c59]"
+                    }`}
+                  />
                 ) : null}
               </button>
             );
           })}
+          {tinyStepsMode && steps.length > visibleSteps.length && (
+            <span className="rounded-full bg-[#fffaf4] px-3 py-1 text-xs font-semibold text-[#9b704f]">
+              rest hidden
+            </span>
+          )}
         </div>
       </main>
 
       <div className="fixed bottom-6 left-6 z-20">
         <button
           onClick={() => setShowCalmZone((value) => !value)}
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e4e0d8] bg-[#f5f1ea] text-[#4a4e4a] shadow-sm transition hover:bg-[#f0ece4]"
+          className={`flex h-12 w-12 items-center justify-center rounded-full border text-[#4a4e4a] shadow-sm transition ${
+            tinyStepsMode
+              ? "border-[#e8c0a0] bg-[#fffaf4] hover:bg-[#fff3e8]"
+              : "border-[#e4e0d8] bg-[#f5f1ea] hover:bg-[#f0ece4]"
+          }`}
           title="Calm Zone"
           type="button"
         >
@@ -278,19 +363,33 @@ export default function Workspace() {
         {showCalmZone && (
           <div className="mt-3 flex gap-2 rounded-2xl border border-[#e4e0d8] bg-white/85 p-3 shadow-sm backdrop-blur">
             <span className="h-5 w-7 rounded-full bg-[#d4ccbf]" />
-            <span className="h-6 w-6 rounded-full bg-[#c8e8d0]" />
+            <span
+              className={`h-6 w-6 rounded-full ${
+                tinyStepsMode ? "bg-[#f4d6c4]" : "bg-[#c8e8d0]"
+              }`}
+            />
             <span className="h-4 w-8 rounded-full bg-[#f8e0a8]" />
           </div>
         )}
       </div>
 
       <div className="fixed bottom-6 right-6 z-20 flex flex-col items-center gap-2">
-        <div className="relative flex h-20 w-16 flex-col items-center justify-end overflow-hidden rounded-b-md rounded-t-2xl border border-[#c4c8bc]/40 bg-white/80 pb-2 shadow-sm backdrop-blur-sm">
+        <div
+          className={`relative flex h-20 w-16 flex-col items-center justify-end overflow-hidden rounded-b-md rounded-t-2xl border pb-2 shadow-sm backdrop-blur-sm transition-colors duration-500 ${
+            tinyStepsMode
+              ? "border-[#e8c0a0]/60 bg-[#fffaf4]/85"
+              : "border-[#c4c8bc]/40 bg-white/80"
+          }`}
+        >
           <div className="absolute left-2 top-0 h-full w-2 -skew-x-12 bg-white opacity-30" />
           <div className="relative z-10 flex flex-wrap-reverse justify-center gap-1 px-2">
             {Array.from({ length: Math.min(sparks || 5, 5) }).map((_, index) => (
               <span
-                className="h-2.5 w-2.5 rounded-full bg-[#705c30] shadow-[0_0_8px_rgba(112,92,48,0.8)]"
+                className={`h-2.5 w-2.5 rounded-full ${
+                  tinyStepsMode
+                    ? "bg-[#d9a273] shadow-[0_0_10px_rgba(217,162,115,0.85)]"
+                    : "bg-[#705c30] shadow-[0_0_8px_rgba(112,92,48,0.8)]"
+                }`}
                 key={index}
               />
             ))}
