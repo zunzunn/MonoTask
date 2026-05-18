@@ -1,7 +1,7 @@
-# MonoTask: Web Design & Architecture Spec
+# MotAnos: Web Design & Architecture Spec
 
 ## 1. Design Philosophy: "Zen-Tech"
-MonoTask is not a tool; it is a **sanctuary**. The design must move away from the "busy" look of modern SaaS. It uses **Subtractive UI**—hiding everything that isn't the current priority.
+MotAnos is not a tool; it is a **sanctuary**. The design must move away from the "busy" look of modern SaaS. It uses **Subtractive UI**—hiding everything that isn't the current priority.
 
 ### Visual Identity
 - **Color Palette:** "Quiet Luxury"

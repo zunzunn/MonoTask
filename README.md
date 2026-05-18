@@ -1,6 +1,6 @@
-# MonoTask
+# MotAnos
 
-MonoTask is an AI-assisted productivity app focused on helping people with executive dysfunction finish the next task without overwhelm. It emphasizes a subtractive UI, gentle task decomposition, and tactile rewards that feel calm and satisfying rather than gamified.
+MotAnos is an AI-assisted productivity app focused on helping people with executive dysfunction finish the next task without overwhelm. It emphasizes a subtractive UI, gentle task decomposition, and tactile rewards that feel calm and satisfying rather than gamified.
 
 ## Summary
 - **Purpose:** Reduce cognitive load by turning large tasks into 2-minute micro-wins.
@@ -20,8 +20,8 @@ MonoTask is an AI-assisted productivity app focused on helping people with execu
 - **Professional, calm aesthetic** vs kid-like visuals in some ADHD apps.
 
 ## Landing Page Structure
-1. **Hero:** "Productivity is too loud. MonoTask is the silence."
-2. **Problem:** Starting is the real barrier; MonoTask hides the noise.
+1. **Hero:** "Productivity is too loud. MotAnos is the silence."
+2. **Problem:** Starting is the real barrier; MotAnos hides the noise.
 3. **Features:** Decomposition, Potato Energy, tactile rewards.
 4. **Pricing:** $4.99/mo, framed as a "one coffee" purchase.
 5. **Mission:** Built for neurodivergent users with empathy and clarity.

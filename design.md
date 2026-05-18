@@ -1,6 +1,6 @@
-# MonoTask Design Spec
+# MotAnos Design Spec
 
-This document defines the landing page UI/UX direction for MonoTask. It consolidates product positioning, audience needs, and the precise visual/interaction rules required to deliver the "Zen-Tech sanctuary" experience.
+This document defines the landing page UI/UX direction for MotAnos. It consolidates product positioning, audience needs, and the precise visual/interaction rules required to deliver the "Zen-Tech sanctuary" experience.
 
 ## 1) Audience, Goals, and Emotional Target
 - **Primary users:** Adults with ADHD/executive dysfunction who are overwhelmed by planning-heavy productivity tools.
@@ -19,7 +19,7 @@ This document defines the landing page UI/UX direction for MonoTask. It consolid
 The landing page is intentionally short and conversion-focused.
 
 ### Section A: Hero (Full viewport)
-- **Headline:** "Productivity is too loud. MonoTask is the silence."
+- **Headline:** "Productivity is too loud. MotAnos is the silence."
 - **Subheadline:** "The AI task assistant for brains that struggle with starting. We only show the next step."
 - **Primary interaction:** Large, centered input with placeholder: "What's the one thing you're avoiding?"
 - **Primary CTA:** "Break it down" (button integrated with input).
@@ -119,4 +119,4 @@ The landing page is intentionally short and conversion-focused.
 
 ---
 
-This spec is the single source of truth for the landing page UI/UX. Any changes should maintain the "subtractive," calm, and premium feel that differentiates MonoTask.
+This spec is the single source of truth for the landing page UI/UX. Any changes should maintain the "subtractive," calm, and premium feel that differentiates MotAnos.

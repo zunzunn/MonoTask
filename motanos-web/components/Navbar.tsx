@@ -22,7 +22,7 @@ export default function Navbar() {
             lineHeight: "32px",
           }}
         >
-          MonoTask
+          MotAnos
         </Link>
         <Link
           href="/app"

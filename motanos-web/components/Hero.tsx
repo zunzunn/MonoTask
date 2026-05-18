@@ -58,7 +58,7 @@ export default function Hero() {
               color: "#2e3230",
             }}
           >
-            Productivity is too loud. MonoTask is the silence.
+            Productivity is too loud. MotAnos is the silence.
           </h1>
 
           {/* Subheadline */}

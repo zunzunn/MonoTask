@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MonoTask - The silence for your productivity",
+  title: "MotAnos - The silence for your productivity",
   description:
     "The AI task assistant for brains that struggle with starting. We only show the next step.",
 };

@@ -29,7 +29,7 @@ export default function MissionSection() {
             color: "#4a4e4a",
           }}
         >
-          We know the shame of a dusty to-do list. MonoTask is built with deep
+          We know the shame of a dusty to-do list. MotAnos is built with deep
           empathy for ADHD and executive dysfunction. We don&apos;t judge, we
           don&apos;t nag.
         </p>

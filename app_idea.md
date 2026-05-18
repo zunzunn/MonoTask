@@ -1,9 +1,9 @@
-# MonoTask: Product Strategy & The "Dopamine Engine"
+# MotAnos: Product Strategy & The "Dopamine Engine"
 
 ## 1. The Core Problem
 Most productivity apps are **Additive**. They ask you to *add* tasks, *add* tags, *add* deadlines. For a brain struggling with Executive Dysfunction, this is just more "noise." 
 
-**MonoTask is Subtractive.** It takes the noise and gives you back **Silence**.
+**MotAnos is Subtractive.** It takes the noise and gives you back **Silence**.
 
 ---
 
@@ -17,7 +17,7 @@ Most productivity apps are **Additive**. They ask you to *add* tasks, *add* tags
 ## 3. The Dopamine Engine: "The Bloom & The Jar"
 *Brutally honest take: XP, Levels, and Badges are "AI Slop" gamification. They feel fake and quickly become a burden.*
 
-**The MonoTask Solution: Tactile, Visual Evolution.**
+**The MotAnos Solution: Tactile, Visual Evolution.**
 
 ### A. The "Pop" (Instant Reward)
 When a sub-task is completed, it shouldn't just be a checkmark.

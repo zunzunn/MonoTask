@@ -1,4 +1,4 @@
-# MonoTask: Marketing & Distribution Strategy
+# MotAnos: Marketing & Distribution Strategy
 
 You don't need a huge budget. You need to be where the "Overwhelmed" people are.
 
@@ -13,7 +13,7 @@ You don't need a huge budget. You need to be where the "Overwhelmed" people are.
 
 ## 2. The "First 100" Plan
 - **Offer a "Founding Member" Lifetime Deal:** $49 for life (instead of $5/mo). This gets you $4,900 upfront to pay for your domain and any future API costs.
-- **The "ADHD Tax" Calculator:** Create a free tool on your landing page that calculates how much money they lose to forgotten subscriptions and late fees. Then offer MonoTask as the "tax-free" solution.
+- **The "ADHD Tax" Calculator:** Create a free tool on your landing page that calculates how much money they lose to forgotten subscriptions and late fees. Then offer MotAnos as the "tax-free" solution.
 
 ## 3. The Referral Loop
 - Give users a "Free Month" if they refer a friend. 

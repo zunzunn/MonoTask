@@ -1,4 +1,4 @@
-# MonoTask: Build Roadmap (0 to Launch)
+# MotAnos: Build Roadmap (0 to Launch)
 
 This roadmap focuses on getting a **High-Fidelity MVP** (Minimum Viable Product) live in 4 weeks, prioritizing the "Zen-Tech" aesthetic and the AI core.
 

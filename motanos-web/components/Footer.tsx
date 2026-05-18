@@ -22,7 +22,7 @@ export default function Footer() {
           color: "#2e3230",
         }}
       >
-        &copy; 2024 MonoTask. Designed for deep focus.
+        &copy; 2024 MotAnos. Designed for deep focus.
       </div>
       <div className="flex gap-6">
         {["Privacy", "Terms", "Journal", "Support"].map((label) => (

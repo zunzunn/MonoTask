@@ -68,7 +68,7 @@ export default function Workspace() {
     const title = taskInput.trim();
 
     if (!title) {
-      setError("Give MonoTask one thing to hold for you.");
+      setError("Give MotAnos one thing to hold for you.");
       return;
     }
 

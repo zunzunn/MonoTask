@@ -29,7 +29,7 @@ export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
           className="text-2xl font-bold tracking-tight text-[#4a7c59]"
           style={{ fontFamily: "Hanken Grotesk, sans-serif" }}
         >
-          MonoTask
+          MotAnos
         </Link>
         <div
           className={`hidden items-center gap-7 text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:flex ${
