@@ -23,7 +23,7 @@ export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
         tinyStepsMode ? "bg-[#fff3e8]/80" : "bg-[#faf6f0]/90"
       }`}
     >
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4">
+      <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-4">
         <Link
           href="/"
           className="text-2xl font-bold tracking-tight text-[#4a7c59]"
@@ -32,7 +32,7 @@ export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
           MotAnos
         </Link>
         <div
-          className={`hidden items-center gap-7 text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:flex ${
+          className={`order-3 flex w-full items-center justify-between gap-2 overflow-x-auto text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:order-none md:w-auto md:justify-start md:gap-7 ${
             tinyStepsMode ? "opacity-55" : "opacity-100"
           }`}
         >
@@ -44,7 +44,7 @@ export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
 
             return (
               <Link
-                className={`rounded-full px-3 py-2 transition ${
+                className={`shrink-0 rounded-full px-3 py-2 transition ${
                   isActive
                     ? "border-b-2 border-[#4a7c59] pb-1 text-[#4a7c59]"
                     : "hover:bg-[#e4e0d8]/40"

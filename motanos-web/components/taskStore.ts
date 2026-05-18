@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useSyncExternalStore } from "react";
 
-export type Source = "idle" | "ai" | "fallback";
+export type Source = "idle" | "manual" | "ai" | "fallback";
 
 export type FocusTask = {
   id: string;
@@ -19,9 +19,9 @@ const ACTIVE_TASK_KEY = "monotask.activeTaskId";
 const listeners = new Set<() => void>();
 
 const starterSteps = [
-  "No pressure. Take one slow breath.",
   "Pick up one thing from the floor.",
   "Put it anywhere it belongs.",
+  "Clear one small surface.",
 ];
 
 export const starterTask: FocusTask = {
@@ -55,6 +55,7 @@ export function createTaskId() {
 }
 
 export function getTaskStatus(task: FocusTask) {
+  if (task.steps.length === 0) return "pending";
   if (task.completed <= 0) return "pending";
   if (task.completed >= task.steps.length) return "done";
   return "started";

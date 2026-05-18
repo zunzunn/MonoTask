@@ -86,3 +86,38 @@ Add a dedicated Tasks section where users can track pending, started, and comple
 ### Notes
 - Task persistence is local to the user's browser for this version.
 - Supabase/auth-backed task persistence remains a future upgrade.
+
+## 2026-05-19 1:33 AM IST
+
+### Goal
+Remove AI-driven tiny-step generation from the main workspace and make task breakdown user-authored, while keeping the Tasks page progress view intact.
+
+### Work Completed
+- Removed Tiny Steps Mode as an AI decomposition flow from the workspace.
+- Reworked task creation into a manual flow:
+  - main task input
+  - user-written draft subtasks before saving
+  - saved tasks marked as `manual`
+- Added active-task subtask management:
+  - add new subtasks after saving
+  - edit existing subtasks
+  - delete subtasks
+  - move subtasks up and down
+- Allowed tasks with zero subtasks and added a clear `No subtasks yet.` state.
+- Kept the existing Tasks page progress layout and restored it to the prior committed behavior after the workspace changes.
+
+### Files Changed
+- `motanos-web/components/Workspace.tsx`
+- `motanos-web/components/taskStore.ts`
+- `motanos-web/components/AppNav.tsx`
+- `motanos-web/components/TasksOverview.tsx`
+- `log.md`
+
+### Verification
+- `npx tsc --noEmit` passed.
+- `npm run lint` passed with the existing custom-font warnings in `app/layout.tsx`.
+- `npm run build` passed.
+
+### Notes
+- The AI decomposition route still exists, but the workspace no longer calls it during task creation.
+- The Tasks page was restored to match the committed progress presentation after the manual subtask changes landed.
