@@ -57,18 +57,18 @@ export default function TasksOverview() {
 
   return (
     <div
-      className="min-h-screen bg-[#fff3e8] text-[#2e3230]"
+      className="min-h-screen bg-[#faf6f0] text-[#2e3230]"
       style={{
         backgroundImage:
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E\")",
       }}
     >
-      <AppNav tinyStepsMode />
+      <AppNav />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 py-10 md:px-8">
         <motion.section
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl border border-[#ead9c7] bg-[#fffaf4]/88 p-6 shadow-[0_18px_60px_rgba(112,92,48,0.12)] backdrop-blur-xl md:p-8"
+          className="rounded-3xl border border-[#e4e0d8] bg-white/90 p-6 shadow-[0_14px_45px_rgba(46,50,48,0.07)] backdrop-blur-xl md:p-8"
           initial={{ opacity: 0, y: -18 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
         >
@@ -112,7 +112,7 @@ export default function TasksOverview() {
         >
           {groups.map((group) => (
             <section
-              className="rounded-3xl border border-[#ead9c7] bg-[#fffaf4]/72 p-4 shadow-[0_12px_42px_rgba(46,50,48,0.06)] backdrop-blur"
+              className="rounded-3xl border border-[#e4e0d8] bg-white/85 p-4 shadow-[0_12px_42px_rgba(46,50,48,0.06)] backdrop-blur"
               key={group.key}
             >
               <div className="mb-4 flex items-start justify-between gap-3 px-1">
@@ -127,7 +127,7 @@ export default function TasksOverview() {
                     {group.helper}
                   </p>
                 </div>
-                <span className="rounded-full bg-[#fff3e8] px-3 py-1 text-sm font-bold text-[#9b704f]">
+                <span className="rounded-full bg-[#f0ece4] px-3 py-1 text-sm font-bold text-[#4a4e4a]">
                   {groupedTasks[group.key].length}
                 </span>
               </div>
@@ -135,7 +135,7 @@ export default function TasksOverview() {
               <div className="flex flex-col gap-3">
                 {groupedTasks[group.key].length === 0 ? (
                   <motion.div
-                    className="rounded-3xl border border-dashed border-[#e8c0a0] bg-white/45 p-5 text-sm font-semibold text-[#9b704f]"
+                    className="rounded-3xl border border-dashed border-[#e4e0d8] bg-white/45 p-5 text-sm font-semibold text-[#74796e]"
                     variants={cardVariants}
                   >
                     Nothing here right now.
@@ -161,7 +161,7 @@ export default function TasksOverview() {
 
 function SummaryPill({ count, label }: { count: number; label: string }) {
   return (
-    <div className="rounded-2xl border border-[#ead9c7] bg-white/55 px-4 py-3 text-center shadow-sm">
+    <div className="rounded-2xl border border-[#e4e0d8] bg-white/55 px-4 py-3 text-center shadow-sm">
       <div
         className="text-2xl font-semibold text-[#4a7c59]"
         style={{ fontFamily: "Hanken Grotesk, sans-serif" }}
@@ -197,7 +197,7 @@ function TaskCard({
       className={`group w-full rounded-3xl border p-5 text-left shadow-sm transition-colors ${
         isActive
           ? "border-[#b9d2bf] bg-[#e8f1e8]"
-          : "border-[#ead9c7] bg-white/65 hover:bg-white"
+          : "border-[#e4e0d8] bg-white/65 hover:bg-white"
       }`}
       onClick={onOpen}
       transition={{ duration: 0.24, ease: "easeOut" }}
@@ -211,7 +211,7 @@ function TaskCard({
           className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${
             isActive
               ? "border-[#b9d2bf] bg-white/70 text-[#4a7c59]"
-              : "border-[#ead9c7] bg-[#fffaf4] text-[#d9a273]"
+              : "border-[#e4e0d8] bg-white/70 text-[#6b6358]"
           }`}
         >
           <span className="material-symbols-outlined text-[25px]">
@@ -227,7 +227,7 @@ function TaskCard({
             >
               {task.title}
             </h3>
-            <span className="rounded-full bg-[#fff3e8] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-[#9b704f]">
+            <span className="rounded-full bg-[#f0ece4] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-[#4a4e4a]">
               {status}
             </span>
           </div>
@@ -244,7 +244,7 @@ function TaskCard({
           </span>
           <span>{progress}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-[#ead9c7]">
+        <div className="h-2 overflow-hidden rounded-full bg-[#e4e0d8]">
           <motion.div
             animate={{ width: `${progress}%` }}
             className="h-full rounded-full bg-[#4a7c59]"

@@ -3,10 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type AppNavProps = {
-  tinyStepsMode?: boolean;
-};
-
 const navItems = [
   { href: "/app", label: "Today" },
   { href: "/app/tasks", label: "Tasks" },
@@ -14,15 +10,11 @@ const navItems = [
   { href: "#", label: "Settings" },
 ];
 
-export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
+export default function AppNav() {
   const pathname = usePathname();
 
   return (
-    <nav
-      className={`sticky top-0 z-50 backdrop-blur-md transition-all duration-500 ${
-        tinyStepsMode ? "bg-[#fff3e8]/80" : "bg-[#faf6f0]/90"
-      }`}
-    >
+    <nav className="sticky top-0 z-50 bg-[#faf6f0]/90 backdrop-blur-md transition-all duration-500">
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-4">
         <Link
           href="/"
@@ -31,11 +23,7 @@ export default function AppNav({ tinyStepsMode = false }: AppNavProps) {
         >
           MotAnos
         </Link>
-        <div
-          className={`order-3 flex w-full items-center justify-between gap-2 overflow-x-auto text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:order-none md:w-auto md:justify-start md:gap-7 ${
-            tinyStepsMode ? "opacity-55" : "opacity-100"
-          }`}
-        >
+        <div className="order-3 flex w-full items-center justify-between gap-2 overflow-x-auto text-sm font-semibold text-[#4a4e4a] transition-opacity duration-500 md:order-none md:w-auto md:justify-start md:gap-7">
           {navItems.map((item) => {
             const isActive =
               item.href !== "#" &&
