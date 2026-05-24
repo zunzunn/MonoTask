@@ -15,6 +15,7 @@ import {
   primarySections,
   customLists,
 } from "@/components/tasks/types";
+import { getTasksByView } from "@/lib/taskUtils";
 
 const allSections = [...primarySections, ...customLists];
 
@@ -34,12 +35,9 @@ export default function TasksPage() {
   const addSubtask = useTaskStore((s) => s.addSubtask);
   const toggleSubtask = useTaskStore((s) => s.toggleSubtask);
 
+  // Base tasks derived from the active view
   const baseTasks = useMemo(
-    () =>
-      tasks.filter((task) => {
-        if (activeList === "completed") return task.completed;
-        return task.list === activeList && !task.completed;
-      }),
+    () => getTasksByView(activeList, tasks),
     [tasks, activeList],
   );
 
@@ -94,16 +92,36 @@ export default function TasksPage() {
   }, [priorityFiltered, sortBy]);
 
   const handleCreateTask = (title: string) => {
+    const now = new Date().toISOString();
+    let listId = activeList;
+    let dueDate = "";
+
+    // Smart views delegate to inbox as the real list
+    if (activeList === "today") {
+      listId = "inbox";
+      dueDate = "Today";
+    } else if (activeList === "upcoming") {
+      listId = "inbox";
+      dueDate = new Date(Date.now() + 86400000).toLocaleDateString(
+        "en-US",
+        { month: "short", day: "numeric" },
+      );
+    } else if (activeList === "completed") {
+      listId = "inbox";
+    }
+
     const newTask: Task = {
       id: `task-${Date.now()}`,
       title,
-      dueDate: "",
+      description: "",
+      completed: false,
+      dueDate,
       priority: "none",
       tags: [],
-      notes: "",
+      listId,
+      createdAt: now,
+      updatedAt: now,
       subtasks: [],
-      completed: false,
-      list: activeList === "completed" ? "inbox" : activeList,
     };
     addTask(newTask);
     setExpandedTaskId(newTask.id);

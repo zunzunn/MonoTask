@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Task, Priority, primarySections, customLists } from "./types";
+import { Task, Priority, customLists } from "./types";
+import { primarySections } from "./types";
 
 const priorityColors: Record<
   string,
@@ -14,6 +15,11 @@ const priorityColors: Record<
 };
 
 const priorityCycle: Priority[] = ["none", "low", "medium", "high"];
+
+const moveLists = [
+  ...primarySections.filter((s) => s.id !== "completed"),
+  ...customLists,
+];
 
 function PriorityBadge({
   priority,
@@ -147,10 +153,6 @@ export default function TaskCard({
   const [subtaskInput, setSubtaskInput] = useState("");
   const [newTagInput, setNewTagInput] = useState("");
   const [burstKey, setBurstKey] = useState(0);
-  const moveLists = [
-    ...primarySections.filter((s) => s.id !== "completed"),
-    ...customLists,
-  ];
 
   const handleComplete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -330,10 +332,10 @@ export default function TaskCard({
                 </span>
                 <select
                   className="cursor-pointer rounded-lg border border-[#e4e0d8] bg-white/60 px-1.5 py-0.5 text-[11px] font-bold text-[#74796e] outline-none transition hover:border-[#c4c8bc]"
-                  defaultValue={task.list}
+                  defaultValue={task.listId}
                   onChange={(e) => {
                     e.stopPropagation();
-                    onUpdateTask({ list: e.target.value });
+                    onUpdateTask({ listId: e.target.value });
                   }}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -420,20 +422,20 @@ export default function TaskCard({
               </form>
             </div>
 
-            {/* Notes */}
+            {/* Description */}
             <div className="mt-4">
               <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#74796e]">
-                Notes
+                Description
               </p>
               <textarea
-                defaultValue={task.notes || ""}
+                defaultValue={task.description || ""}
                 className="w-full resize-none rounded-xl border border-[#e4e0d8] bg-[#faf6f0]/50 px-3 py-2 text-sm leading-relaxed text-[#4a4e4a] outline-none transition placeholder:text-[#c4c8bc] focus:border-[#4a7c59] focus:ring-2 focus:ring-[#4a7c59]/10"
                 rows={3}
-                placeholder="Add notes..."
+                placeholder="Add description..."
                 onBlur={(e) => {
                   const val = e.target.value.trim();
-                  if (val !== (task.notes || ""))
-                    onUpdateTask({ notes: val });
+                  if (val !== (task.description || ""))
+                    onUpdateTask({ description: val });
                 }}
                 onClick={(e) => e.stopPropagation()}
               />

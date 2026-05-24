@@ -2,11 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Task, primarySections, customLists, sidebarFooter } from "./types";
-
-function getCount(list: string, tasks: Task[]): number {
-  if (list === "completed") return tasks.filter((t) => t.completed).length;
-  return tasks.filter((t) => t.list === list && !t.completed).length;
-}
+import { getIncompleteCount } from "@/lib/taskUtils";
 
 function SidebarItem({
   icon,
@@ -99,21 +95,21 @@ export default function TaskSidebar({
         </span>
       </div>
 
-      {/* Primary sections */}
+      {/* Primary sections (smart views) */}
       <div className="space-y-0.5">
         {primarySections.map((section) => (
           <SidebarItem
             key={section.id}
             icon={section.icon}
             label={section.label}
-            count={getCount(section.id, tasks)}
+            count={getIncompleteCount(section.id, tasks)}
             active={activeList === section.id}
             onSelect={() => onSelectList(section.id)}
           />
         ))}
       </div>
 
-      {/* Custom lists */}
+      {/* Custom lists (real lists) */}
       <div className="mt-4 border-t border-[#e4e0d8] pt-3">
         <p className="mb-1.5 px-4 text-[10px] font-bold uppercase tracking-[0.15em] text-[#74796e]">
           Lists
@@ -124,7 +120,7 @@ export default function TaskSidebar({
               key={list.id}
               icon={list.icon}
               label={list.label}
-              count={getCount(list.id, tasks)}
+              count={getIncompleteCount(list.id, tasks)}
               active={activeList === list.id}
               onSelect={() => onSelectList(list.id)}
             />

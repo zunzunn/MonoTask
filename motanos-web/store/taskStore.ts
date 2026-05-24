@@ -12,7 +12,7 @@ interface TaskStore {
   addSubtask: (taskId: string, title: string) => void;
   toggleSubtask: (taskId: string, subtaskId: string) => void;
   deleteSubtask: (taskId: string, subtaskId: string) => void;
-  moveTask: (taskId: string, newList: string) => void;
+  moveTask: (taskId: string, newListId: string) => void;
 }
 
 export const useTaskStore = create<TaskStore>()(
@@ -26,7 +26,13 @@ export const useTaskStore = create<TaskStore>()(
       updateTask: (id, updates) =>
         set((state) => ({
           tasks: state.tasks.map((t) =>
-            t.id === id ? { ...t, ...updates } : t,
+            t.id === id
+              ? {
+                  ...t,
+                  ...updates,
+                  updatedAt: new Date().toISOString(),
+                }
+              : t,
           ),
         })),
 
@@ -38,7 +44,13 @@ export const useTaskStore = create<TaskStore>()(
       toggleComplete: (id) =>
         set((state) => ({
           tasks: state.tasks.map((t) =>
-            t.id === id ? { ...t, completed: !t.completed } : t,
+            t.id === id
+              ? {
+                  ...t,
+                  completed: !t.completed,
+                  updatedAt: new Date().toISOString(),
+                }
+              : t,
           ),
         })),
 
@@ -52,6 +64,7 @@ export const useTaskStore = create<TaskStore>()(
                     ...t.subtasks,
                     { id: `sub-${Date.now()}`, title, done: false },
                   ],
+                  updatedAt: new Date().toISOString(),
                 }
               : t,
           ),
@@ -68,6 +81,7 @@ export const useTaskStore = create<TaskStore>()(
                       ? { ...st, done: !st.done }
                       : st,
                   ),
+                  updatedAt: new Date().toISOString(),
                 }
               : t,
           ),
@@ -82,15 +96,22 @@ export const useTaskStore = create<TaskStore>()(
                   subtasks: t.subtasks.filter(
                     (st) => st.id !== subtaskId,
                   ),
+                  updatedAt: new Date().toISOString(),
                 }
               : t,
           ),
         })),
 
-      moveTask: (taskId, newList) =>
+      moveTask: (taskId, newListId) =>
         set((state) => ({
           tasks: state.tasks.map((t) =>
-            t.id === taskId ? { ...t, list: newList } : t,
+            t.id === taskId
+              ? {
+                  ...t,
+                  listId: newListId,
+                  updatedAt: new Date().toISOString(),
+                }
+              : t,
           ),
         })),
     }),

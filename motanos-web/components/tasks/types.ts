@@ -9,13 +9,15 @@ export type Priority = "none" | "low" | "medium" | "high";
 export interface Task {
   id: string;
   title: string;
+  description?: string;
+  completed: boolean;
   dueDate?: string;
   priority: Priority;
   tags: string[];
-  notes?: string;
+  listId: string;
+  createdAt: string;
+  updatedAt: string;
   subtasks: SubTask[];
-  completed: boolean;
-  list: string;
 }
 
 export interface SidebarSection {
