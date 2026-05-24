@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navItems = [
+const navItems: { href: string; label: string; icon?: string }[] = [
   { href: "/app", label: "Today" },
   { href: "/app/progress", label: "Progress" },
+  { href: "/app/tasks", label: "Tasks", icon: "list_alt" },
   { href: "/app/garden", label: "Garden" },
   { href: "/app/settings", label: "Settings" },
 ];
@@ -77,7 +78,16 @@ export default function AppNav() {
                 }`}
                 href={item.href}
                 key={item.label}
+                style={!isGarden && isActive && item.label === "Tasks" ? { textShadow: "0 0 20px rgba(74,124,89,0.3)" } : undefined}
               >
+                {item.icon && (
+                  <span
+                    className="material-symbols-outlined mr-1 align-middle text-base"
+                    style={{ fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24", verticalAlign: "-2px" }}
+                  >
+                    {item.icon}
+                  </span>
+                )}
                 {item.label}
               </Link>
             );
