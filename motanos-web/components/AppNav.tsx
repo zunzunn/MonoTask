@@ -8,7 +8,7 @@ const navItems = [
   { href: "/app", label: "Today" },
   { href: "/app/progress", label: "Progress" },
   { href: "/app/garden", label: "Garden" },
-  { href: "#", label: "Settings" },
+  { href: "/app/settings", label: "Settings" },
 ];
 
 export default function AppNav() {
